@@ -1,3 +1,4 @@
+/**
  *  While I did try to do this on my own, I did search up a lot of things to make things easier.
  *  Resources used: 
  *  
@@ -32,7 +33,7 @@ let players = [{
 
 let currentPlayer = "Player1";
 
-let currentPlayerTurn = "${currentPlayer}'s turn!";
+let gameStatus = "${currentPlayer}'s turn!";
 
 /*         FLOW         */
 // Setup
@@ -45,7 +46,7 @@ let currentPlayerTurn = "${currentPlayer}'s turn!";
 // Restart when player requests to
 
 Setup();
-// ResetRound();
+ResetRound();
 DisplayGame();
 /*         FLOW         */
 
@@ -55,7 +56,7 @@ DisplayGame();
 function Setup() {
     // Grab text elements to display game
     GrabTextElementsFromCells();
-    AddEventListenerToCells();
+    AddEventListenersToCellsAndButtons();
 }
 
 
@@ -65,6 +66,7 @@ function ResetRound() {
             cellMap[i][j] = 0;
         }
     }
+    DisplayGame();
 } 
 
 function DisplayGame() {
@@ -86,7 +88,11 @@ function DisplayGame() {
     }
 }
 
-function OnPlayerClick(clickedCellEvent) {
+function DispalyStatus() {
+    
+}
+
+function OnPlayerCellClick(clickedCellEvent) {
     const clickedCell = clickedCellEvent.target;
 
     let playerSymbol = "";
@@ -100,30 +106,61 @@ function OnPlayerClick(clickedCellEvent) {
 
     // Check whose turn it is
     if (currentPlayer == players[0].name) {
+        // X
+        cellMap[cellX][cellY] = 1;
         playerSymbol = players[0].symbol;
     } else {
+        // O
+        cellMap[cellX][cellY] = 2;
         playerSymbol = players[1].symbol;
     }
 
     // Place X/O down
     cellText[cellX][cellY].innerText = playerSymbol;
-
     // Check if player has won
     CheckIfPlayerHasWon();
-
+    DisplayStatus();
     console.log("Clicked: " + clickedCell.getAttribute('data-cell-id') + "!");
 }
 
 // If player has three in a row in horizontal, vertical, and diagonal
 function CheckIfPlayerHasWon() {
+    let playerSymbol;
+    let hasPlayerWon = false;
+    if (currentPlayer == players[0].name) {
+        // X
+        playerSymbol = 1;
+    } else {
+        // O
+        playerSymbol = 2;
+    }
+    
+    // Check if player has three in a row horizontally
+    hasPlayerWon = CheckMapHorizontally(playerSymbol); 
+    // Check if player has three in a row vertically
+    hasPlayerWon = CheckMapVertically(playerSymbol);
+    // Check if player has three in a row diagonally
+    hasPlayerWon = CheckMapDiagonally(playerSymbol);
 
+    if (hasPlayerWon) {
+        gameStatus = `${currentPlayer} has won the game!`;
+    } else {
+        ChangePlayerTurn();
+    }
 }
 
 function ChangePlayerTurn() {
-
+    if (currentPlayer == players[0].name) {
+        currentPlayer = players[1].name;
+    } else {
+        currentPlayer = players[0].name;
+    }
+    gameStatus = `${currentPlayer}'s turn!`;
+    console.log(gameStatus);
 }
-
 /*         GAME LOGIC FUNCTIONS         */
+
+
 /*         HELPER FUNCTIONS         */
 // For Setup() Function
 function GrabTextElementsFromCells() {
@@ -133,13 +170,28 @@ function GrabTextElementsFromCells() {
         }
     }
 }
+
 // For Setup() Function
-function AddEventListenerToCells() {
+function AddEventListenersToCellsAndButtons() {
     document.querySelectorAll('.cell').forEach(cell => {
-        cell.addEventListener('click', OnPlayerClick);
+        cell.addEventListener('click', OnPlayerCellClick);
     })
+
+    document.querySelector('.game-restart-button').addEventListener('click', ResetRound);
 }
-// For OnPlayerClick() Function
+
+// For CheckPlayerHasWon() Function
+function CheckMapHorizontally(playerSymbol) {
+    return false;
+}
+
+function CheckMapVertically(playerSymbol) {
+    return false;
+}
+
+function CheckMapDiagonally(playerSymbol) {
+    return false;
+}
 
 
 /*         HELPER FUNCTIONS         */
