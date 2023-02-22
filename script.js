@@ -33,8 +33,9 @@ let players = [{
 
 let currentPlayer = "Player1";
 
-let gameStatus = "${currentPlayer}'s turn!";
+let gameStatus = `${currentPlayer}'s turn!`;
 
+let statusElement = document.querySelector('.game-status');
 /*         FLOW         */
 // Setup
 // Reset the round
@@ -48,6 +49,7 @@ let gameStatus = "${currentPlayer}'s turn!";
 Setup();
 ResetRound();
 DisplayGame();
+DisplayStatus();
 /*         FLOW         */
 
 
@@ -66,6 +68,7 @@ function ResetRound() {
             cellMap[i][j] = 0;
         }
     }
+    gameStatus = `${currentPlayer}'s turn!`;
     DisplayGame();
 } 
 
@@ -86,10 +89,6 @@ function DisplayGame() {
             }
         }
     }
-}
-
-function DispalyStatus() {
-    
 }
 
 function OnPlayerCellClick(clickedCellEvent) {
@@ -125,23 +124,19 @@ function OnPlayerCellClick(clickedCellEvent) {
 
 // If player has three in a row in horizontal, vertical, and diagonal
 function CheckIfPlayerHasWon() {
-    let playerSymbol;
+    let playerSymbolNumber;
     let hasPlayerWon = false;
     if (currentPlayer == players[0].name) {
         // X
-        playerSymbol = 1;
+        playerSymbolNumber = 1;
     } else {
         // O
-        playerSymbol = 2;
+        playerSymbolNumber = 2;
     }
     
-    // Check if player has three in a row horizontally
-    hasPlayerWon = CheckMapHorizontally(playerSymbol); 
-    // Check if player has three in a row vertically
-    hasPlayerWon = CheckMapVertically(playerSymbol);
-    // Check if player has three in a row diagonally
-    hasPlayerWon = CheckMapDiagonally(playerSymbol);
+    hasPlayerWon = CheckMap(playerSymbolNumber);
 
+    console.log("Has Player Won???: " + hasPlayerWon);
     if (hasPlayerWon) {
         gameStatus = `${currentPlayer} has won the game!`;
     } else {
@@ -157,6 +152,10 @@ function ChangePlayerTurn() {
     }
     gameStatus = `${currentPlayer}'s turn!`;
     console.log(gameStatus);
+}
+
+function DisplayStatus() {
+    statusElement.innerText = gameStatus;
 }
 /*         GAME LOGIC FUNCTIONS         */
 
@@ -180,18 +179,88 @@ function AddEventListenersToCellsAndButtons() {
     document.querySelector('.game-restart-button').addEventListener('click', ResetRound);
 }
 
-// For CheckPlayerHasWon() Function
-function CheckMapHorizontally(playerSymbol) {
+// For CheckIfPlayerHasWon() Function
+function CheckMap(playerSymbolNumber) {
+    if (CheckMapHorizontally(playerSymbolNumber)) {
+        return true;
+    }
+    if (CheckMapVertically(playerSymbolNumber)) {
+        return true;
+    }
+    if (CheckMapHorizontally(playerSymbolNumber)) {
+        return true;
+    }
     return false;
 }
 
-function CheckMapVertically(playerSymbol) {
-    return false;
+// For CheckMap() Function
+function CheckMapHorizontally(playerSymbolNumber) {
+    let hasThreeInARow = false;
+    for (let i = 0; i < cellMap.length; i++) {
+        let symbolCount = 0;
+        for (let j = 0; j < cellMap.length; j++) {
+            if (cellMap[j][i] == playerSymbolNumber) {
+                symbolCount++;
+                console.log("Horizontal: " + symbolCount);
+            }
+        }
+        console.log("Symbol Count: " + symbolCount);
+        if (symbolCount == 3) {
+            hasThreeInARow = true;
+        }
+        console.log("Three in a row?: " + hasThreeInARow);
+        console.log("----------End of Function----------");
+    }
+    return hasThreeInARow;
 }
 
-function CheckMapDiagonally(playerSymbol) {
-    return false;
+// For CheckMap() Function
+function CheckMapVertically(playerSymbolNumber) {
+    let hasThreeInARow = false;
+    for (let i = 0; i < cellMap.length; i++) {
+        let symbolCount = 0;
+        for (let j = 0; j < cellMap.length; j++) {
+            if (cellMap[i][j] == playerSymbolNumber) {
+                symbolCount++;
+                console.log("Vertical: " + symbolCount);
+            }
+        }
+        console.log("Symbol Count: " + symbolCount);
+        if (symbolCount == 3) {
+            hasThreeInARow = true;
+        }
+        console.log("Three in a row?: " + hasThreeInARow);
+        console.log("----------End of Function----------");
+    }
 }
+
+// For CheckMap() Function
+function CheckMapDiagonally(playerSymbolNumber) {
+    let hasThreeInARow = false;
+    for (let i = 0; i < cellMap.length; i++) {
+        let symbolCount = 0;
+        if (cellMap[i][i] == playerSymbolNumber) {
+            symbolCount++;
+        }
+        if (symbolCount >= 3) {
+            hasThreeInARow = true;
+        }
+    }
+    for (let j = cellMap.length-1; j > 0; j--) {
+        let symbolCount = 0;
+        if (cellMap[j][j] == playerSymbolNumber) {
+            symbolCount++;
+        }
+        if (symbolCount >= 3) {
+            hasThreeInARow = true;
+        }
+    }
+
+    return hasThreeInARow;
+}
+    // either check by iterating through map horizontally
+    // or go down the middle center or side to side and check adjacent element
+    // diagonally we just use two for loops that use the same index, we use it twice with starting variable at the start and and the end.
 
 
 /*         HELPER FUNCTIONS         */
