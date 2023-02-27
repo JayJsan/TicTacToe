@@ -193,7 +193,6 @@ function AddEventListenersToCellsAndButtons() {
     document.querySelectorAll('.cell').forEach(cell => {
         cell.addEventListener('click', OnPlayerCellClick);
     })
-
     document.querySelector('.game-restart-button').addEventListener('click', ResetRound);
 }
 
