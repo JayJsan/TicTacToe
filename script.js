@@ -7,9 +7,7 @@
  *  
  */
 
-/**
- * Current state of the game
- */
+/* Game Logic Variables */
 let cellMap = [
     [2,2,0],
     [0,2,0],
@@ -40,6 +38,21 @@ let gameStates = ["Playing","Won","Tie"];
 let currentGameState = "Playing";
 
 let spacesFilled = 0;
+/* Game Logic Variables */
+/* Online Multiplayer Variables */
+const createGameButton = document.querySelector('.create-game-button');
+const gameInput = document.querySelector('.game-input');
+const joinButton = document.querySelector('.join-button');
+const joinInput = document.querySelector('.join-input');
+
+let gameNameCreated = "";
+let gameJoined = "";
+
+
+
+/* Online Multiplayer Variables */
+
+
 /*         FLOW         */
 // Setup
 // Reset the round
@@ -57,7 +70,7 @@ DisplayStatus();
 /*         FLOW         */
 
 
-
+//#region GAME LOGIC
 /*         GAME LOGIC FUNCTIONS         */
 function Setup() {
     // Grab text elements to display game
@@ -176,8 +189,18 @@ function DisplayStatus() {
     statusElement.innerText = gameStatus;
 }
 /*         GAME LOGIC FUNCTIONS         */
+//#endregion
 
 
+//#region ONLINE MULTIPLAYER
+/*         ONLINE MULTIPLAYER         */
+
+
+
+/*         ONLINE MULTIPLAYER         */
+//#endregion
+
+//#region HELPER FUNCTIONS
 /*         HELPER FUNCTIONS         */
 // For Setup() Function
 function GrabTextElementsFromCells() {
@@ -194,6 +217,14 @@ function AddEventListenersToCellsAndButtons() {
         cell.addEventListener('click', OnPlayerCellClick);
     })
     document.querySelector('.game-restart-button').addEventListener('click', ResetRound);
+
+    createGameButton.addEventListener('click', () => {
+        gameNameCreated = gameInput.value;
+    })
+
+    joinButton.addEventListener('click', () => {
+        gameJoined = joinInput.value;
+    })
 }
 
 // For CheckIfPlayerHasWon() Function
@@ -280,3 +311,4 @@ function CheckMapDiagonally(playerSymbolNumber) {
 
 
 /*         HELPER FUNCTIONS         */
+//#endregion
