@@ -1,0 +1,15 @@
+.game-container {
+    display: grid;
+    grid-template-columns: 50px 50px 50px;
+    column-gap: 75px;
+    row-gap: 25px;
+    justify-content: center;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    box-shadow: 0 0 0 1px #333333;
+    border: 1px solid #333333;
+    cursor: pointer;
+}
