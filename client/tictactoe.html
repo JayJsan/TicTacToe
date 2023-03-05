@@ -10,44 +10,55 @@
 		<script defer src="script.js"></script>
 	</head>
 	<body>
-		<section>
-			<h1 class="game-title">Tic Tac Toe</h1>
-			<div class="game-container">
-				<div class="cell" data-cell-id="00">
-					<p>00</p>
-				</div>
-				<div class="cell" data-cell-id="10">
-					<p>10</p>
-				</div>
-				<div class="cell" data-cell-id="20">
-					<p>20</p>
-				</div>
-				<div class="cell" data-cell-id="01">
-					<p>01</p>
-				</div>
-				<div class="cell" data-cell-id="11">
-					<p>11</p>
-				</div>
-				<div class="cell" data-cell-id="21">
-					<p>21</p>
-				</div>
-				<div class="cell" data-cell-id="02">
-					<p>02</p>
-				</div>
-				<div class="cell" data-cell-id="12">
-					<p>12</p>
-				</div>
-				<div class="cell" data-cell-id="22">
-					<p>22</p>
+		<div class="container">
+			<div class="ttt-section-container">
+				<h1 class="game-title">Tic Tac Toe</h1>
+					<div class="game-container">
+						<div class="cell" data-cell-id="00">
+							<p>00</p>
+						</div>
+						<div class="cell" data-cell-id="10">
+							<p>10</p>
+						</div>
+						<div class="cell" data-cell-id="20">
+							<p>20</p>
+						</div>
+						<div class="cell" data-cell-id="01">
+							<p>01</p>
+						</div>
+						<div class="cell" data-cell-id="11">
+							<p>11</p>
+						</div>
+						<div class="cell" data-cell-id="21">
+							<p>21</p>
+						</div>
+						<div class="cell" data-cell-id="02">
+							<p>02</p>
+						</div>
+						<div class="cell" data-cell-id="12">
+							<p>12</p>
+						</div>
+						<div class="cell" data-cell-id="22">
+							<p>22</p>
+						</div>
+					</div>
+				<h2 class="game-status">n/a</h2>
+				<button class="game-restart-button">Restart Game?</button>
+			</div>
+			<div class="online-section-container">
+				<h3>online multiplayer section test</h3>
+				<div class="chat-container">
+					<div id="message-container"></div>
+					<form id="form">
+						<label for="message-input">Message</label>
+						<input type="text" id="message-input">
+						<button type="submit" id="send-button">Send</button>
+						<label for="room-input">Room</label>
+						<input type="text" id="room-input">
+						<button type="button" id="room-button">Send</button>
+					</form>
 				</div>
 			</div>
-			<h2 class="game-status">n/a</h2>
-			<button class="game-restart-button">Restart Game?</button>
-			<h3>online multiplayer section test</h3>
-			<input class="game-input">
-			<button class="create-game-button">Create Game</button>
-			<input class="join-input">
-			<button class="join-button">Join</button>
-		</section>
+		</div>
 	</body>
 </html>

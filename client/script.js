@@ -40,13 +40,13 @@ let currentGameState = "Playing";
 let spacesFilled = 0;
 /* Game Logic Variables */
 /* Online Multiplayer Variables */
-const createGameButton = document.querySelector('.create-game-button');
-const gameInput = document.querySelector('.game-input');
-const joinButton = document.querySelector('.join-button');
-const joinInput = document.querySelector('.join-input');
+// const createGameButton = document.querySelector('.create-game-button');
+// const gameInput = document.querySelector('.game-input');
+// const joinButton = document.querySelector('.join-button');
+// const joinInput = document.querySelector('.join-input');
 
-let gameNameCreated = "";
-let gameJoined = "";
+// let gameNameCreated = "";
+// let gameJoined = "";
 
 
 
@@ -218,13 +218,13 @@ function AddEventListenersToCellsAndButtons() {
     })
     document.querySelector('.game-restart-button').addEventListener('click', ResetRound);
 
-    createGameButton.addEventListener('click', () => {
-        gameNameCreated = gameInput.value;
-    })
+    // createGameButton.addEventListener('click', () => {
+    //     gameNameCreated = gameInput.value;
+    // })
 
-    joinButton.addEventListener('click', () => {
-        gameJoined = joinInput.value;
-    })
+    // joinButton.addEventListener('click', () => {
+    //     gameJoined = joinInput.value;
+        // })
 }
 
 // For CheckIfPlayerHasWon() Function
