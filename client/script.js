@@ -45,6 +45,12 @@ let spacesFilled = 0;
 // const joinButton = document.querySelector('.join-button');
 // const joinInput = document.querySelector('.join-input');
 
+const joinRoomButton = document.getElementById("room-button");
+const messageInput = document.getElementById("message-input");
+const roomInput = document.getElementById("room-input");
+const form = document.getElementById("form");
+
+const socket = io('http://localhost:3000');
 // let gameNameCreated = "";
 // let gameJoined = "";
 
@@ -194,8 +200,13 @@ function DisplayStatus() {
 
 //#region ONLINE MULTIPLAYER
 /*         ONLINE MULTIPLAYER         */
+socket.on('connect', () => {
+    displayMessage(`Connected with id: ${socket.id}`);
+});
 
-
+socket.on('receive-message', message => {
+    displayMessage(message);
+})
 
 /*         ONLINE MULTIPLAYER         */
 //#endregion
@@ -213,18 +224,47 @@ function GrabTextElementsFromCells() {
 
 // For Setup() Function
 function AddEventListenersToCellsAndButtons() {
+    AddTicTacToeEventListeners();
+    AddChatboxEventListeners();
+}
+
+// For AddEventListenersToCellsAndButtons()
+function AddTicTacToeEventListeners() {
     document.querySelectorAll('.cell').forEach(cell => {
         cell.addEventListener('click', OnPlayerCellClick);
     })
     document.querySelector('.game-restart-button').addEventListener('click', ResetRound);
+}
 
-    // createGameButton.addEventListener('click', () => {
-    //     gameNameCreated = gameInput.value;
-    // })
+// For AddEventListenersToCellsAndButtons()
+function AddChatboxEventListeners() {
+    // Not mine! Taken from 
+    // Modified base code to fit requirements
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        const message = messageInput.value;
+        const room = roomInput.value;
+    
+        if (message === "") return;
+        displayMessage(message);
+        socket.emit('send-message', message, room);
+    
+        messageInput.value = "";
+    });
 
-    // joinButton.addEventListener('click', () => {
-    //     gameJoined = joinInput.value;
-        // })
+    joinRoomButton.addEventListener("click", () => {
+        const room = roomInput.value;
+        socket.emit('join-room', room, message => {
+            displayMessage(message);
+        });
+    });
+}
+
+// not mine! used for displaying messages
+function displayMessage(message) {
+    const div = document.createElement("div");
+    div.textContent = message;
+    document.getElementById("message-container").append(div);
 }
 
 // For CheckIfPlayerHasWon() Function
