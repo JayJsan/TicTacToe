@@ -29,12 +29,12 @@ let players = [{
     symbol: "O"
 }];
 
-let currentPlayer = "Player1";
+let currentSymbol = "X";
 
-let gameStatus = `${currentPlayer}'s turn!`;
+let gameStatus = `${currentSymbol}'s turn!`;
 let statusElement = document.querySelector('.game-status');
 
-let gameStates = ["Playing","Won","Tie"];
+const gameStates = ["Playing","Won","Tie","Inactive","OtherPlayer"];
 let currentGameState = "Playing";
 
 let spacesFilled = 0;
@@ -45,12 +45,22 @@ let spacesFilled = 0;
 // const joinButton = document.querySelector('.join-button');
 // const joinInput = document.querySelector('.join-input');
 
+
+
+const socket = io('http://localhost:3000');
+
 const joinRoomButton = document.getElementById("room-button");
 const messageInput = document.getElementById("message-input");
 const roomInput = document.getElementById("room-input");
 const form = document.getElementById("form");
+const nameChangeButton = document.getElementById("name-button");
+const nameInput = document.getElementById("name-input");
 
-const socket = io('http://localhost:3000');
+const modeSelect = document.getElementById("mode-select");
+const modeButton = document.getElementById("mode-button");
+let modeLabel = document.getElementById("mode-label");
+let currentMode = "Local";
+
 // let gameNameCreated = "";
 // let gameJoined = "";
 
@@ -71,8 +81,9 @@ const socket = io('http://localhost:3000');
 
 Setup();
 ResetRound();
-DisplayGame();
-DisplayStatus();
+DisplayMode();
+//DisplayGame();
+//DisplayStatus();
 /*         FLOW         */
 
 
@@ -81,7 +92,7 @@ DisplayStatus();
 function Setup() {
     // Grab text elements to display game
     GrabTextElementsFromCells();
-    AddEventListenersToCellsAndButtons();
+    AddAllEventListeners();
 }
 
 
@@ -91,7 +102,7 @@ function ResetRound() {
             cellMap[i][j] = 0;
         }
     }
-    gameStatus = `${currentPlayer}'s turn!`;
+    gameStatus = `${currentSymbol}'s turn!`;
     currentGameState = gameStates[0];
     spacesFilled = 0;
 
@@ -136,7 +147,7 @@ function OnPlayerCellClick(clickedCellEvent) {
     spacesFilled++;
 
     // Check whose turn it is
-    if (currentPlayer == players[0].name) {
+    if (currentSymbol == players[0].symbol) {
         // X
         cellMap[cellX][cellY] = 1;
         playerSymbol = players[0].symbol;
@@ -158,7 +169,7 @@ function OnPlayerCellClick(clickedCellEvent) {
 function CheckIfPlayerHasWon() {
     let playerSymbolNumber;
     let hasPlayerWon = false;
-    if (currentPlayer == players[0].name) {
+    if (currentSymbol == players[0].symbol) {
         // X
         playerSymbolNumber = 1;
     } else {
@@ -170,7 +181,7 @@ function CheckIfPlayerHasWon() {
 
     console.log("Has Player Won???: " + hasPlayerWon);
     if (hasPlayerWon) {
-        gameStatus = `${currentPlayer} has won the game!`;
+        gameStatus = `${currentSymbol} has won the game!`;
         currentGameState = gameStates[1];
     } else if (spacesFilled >= 9) {
         gameStatus = "Tie!";
@@ -182,12 +193,12 @@ function CheckIfPlayerHasWon() {
 }
 
 function ChangePlayerTurn() {
-    if (currentPlayer == players[0].name) {
-        currentPlayer = players[1].name;
+    if (currentSymbol == players[0].symbol) {
+        currentSymbol = players[1].symbol;
     } else {
-        currentPlayer = players[0].name;
+        currentSymbol = players[0].symbol;
     }
-    gameStatus = `${currentPlayer}'s turn!`;
+    gameStatus = `${currentSymbol}'s turn!`;
     console.log(gameStatus);
 }
 
@@ -201,7 +212,7 @@ function DisplayStatus() {
 //#region ONLINE MULTIPLAYER
 /*         ONLINE MULTIPLAYER         */
 socket.on('connect', () => {
-    displayMessage(`Connected with id: ${socket.id}`);
+    displayMessage(`Game ID: ${socket.id}`);
 });
 
 socket.on('receive-message', message => {
@@ -223,9 +234,10 @@ function GrabTextElementsFromCells() {
 }
 
 // For Setup() Function
-function AddEventListenersToCellsAndButtons() {
+function AddAllEventListeners() {
     AddTicTacToeEventListeners();
     AddChatboxEventListeners();
+    AddModeEventListeners();
 }
 
 // For AddEventListenersToCellsAndButtons()
@@ -258,6 +270,16 @@ function AddChatboxEventListeners() {
             displayMessage(message);
         });
     });
+
+    nameChangeButton.addEventListener("click", () => {
+        players[0].name = nameInput.value;
+    })
+}
+
+function AddModeEventListeners() {
+    modeButton.addEventListener("click", () => {
+        DisplayMode();
+    });
 }
 
 // not mine! used for displaying messages
@@ -265,6 +287,10 @@ function displayMessage(message) {
     const div = document.createElement("div");
     div.textContent = message;
     document.getElementById("message-container").append(div);
+}
+
+function DisplayMode() {
+    modeLabel.innerText = `Mode: ${modeSelect.value}`;
 }
 
 // For CheckIfPlayerHasWon() Function

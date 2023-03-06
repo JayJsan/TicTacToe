@@ -42,6 +42,14 @@
 							<p>22</p>
 						</div>
 					</div>
+					<form id="mode-form">
+						<label id="mode-label" for="mode-select">Mode: n/a</label>
+						<select name="modes" id="mode-select">
+							<option value="Local">Local</option>
+							<option value="Online">Online</option>
+						</select>
+						<button type="button" id="mode-button">Switch</button>
+					</form>
 				<h2 class="game-status">n/a</h2>
 				<button class="game-restart-button">Restart Game?</button>
 			</div>
@@ -50,10 +58,13 @@
 				<div class="chat-container">
 					<div id="message-container"></div>
 					<form id="form">
+						<label for="name-input">Username</label>
+						<input type="text" id="name-input">
+						<button type="button" id="name-button">Change</button>
 						<label for="message-input">Message</label>
 						<input type="text" id="message-input">
 						<button type="submit" id="send-button">Send</button>
-						<label for="room-input">Room</label>
+						<label for="room-input">Game ID</label>
 						<input type="text" id="room-input">
 						<button type="button" id="room-button">Join</button>
 					</form>
